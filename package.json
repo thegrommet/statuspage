@@ -1,0 +1,17 @@
+{
+  "name": "@thegrommet/statuspage",
+  "version": "1.0.0",
+  "description": "Our status page and report submission form",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thegrommet/statuspage.git"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/thegrommet/statuspage/issues"
+  },
+  "homepage": "https://github.com/thegrommet/statuspage#readme",
+  "dependencies": {
+    "@thegrommet/m2css": "^1.0.0"
+  }
+}

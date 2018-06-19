@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+    <head>
+        <title>The Grommet (Internal) - Report a Problem</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="node_modules/@thegrommet/m2css/css/app.css">
+        <style>
+            .x-form-group { display: block }
+            .x-form-label { font-size: 14px; padding-bottom: 2px; display: block }
+            .x-form-field { width: 100%; padding: 8px; font-size: 16px; border-radius: 2px; border: 1px solid #ccc }
+        </style>
+    </head>
+    <body class='f-body'>
+        <div class="flex-row flex-justify-center">
+            <h1 class='f-title flex-6-12'>Report a Problem</h1>
+        </div>
+
+        <div class="flex-row flex-justify-center">
+            <div class="flex-6-12 m-t-l">
+                We're aware of the issue affecting the frobnicator, see slack for updates. — Aria
+            </div>
+        </div>
+
+        <div class='flex-row flex-justify-center'>
+
+            <form id="report-form" action='#' method='POST' class='flex-6-12 flex-row flex-wrap f-body'>
+                <div class="x-form-group flex-6-12 m-t-l" >
+                    <label for="reporter" class="x-form-label"> Your email address </label>
+                    <input type="email" id="reporter" name="reporter" class='x-form-field' placeholder="jules@thegrommet.com">
+                </div>
+
+                <div class="x-form-group flex-12-12 m-t-l"> 
+                    <label for="description" class="x-form-label"> Describe the problem </label>
+                    <textarea name="description" class="x-form-field" rows=10 placeholder="What's wrong, what you expected, what you got instead, and any error numbers or details to help figure it out"></textarea>
+                </div>
+
+                <fieldset class="m-t-l flex-12-12" style="border: none">
+                    <legend>How urgently do you expect a reply?</legend>
+                    <p><label><input type="radio" name="urgency" value="emergency"> Immediately</label></p>
+                    <p><label><input type="radio" name="urgency" value="urgent"> Next business day</label></p>
+                    <p><label><input type="radio" name="urgency" value="normal" checked> This week</label></p>
+                </fieldset>
+
+                <div class="flex-12-12 flex-row flex-justify-end">
+                    <button type='submit' class='btn btn-m btn-txt btn-primary'>Send</button>
+                </div>
+            </form>
+        </div>
+        <script type="module">
+            const form = document.getElementById('report-form')
+            const reporter = form.elements.namedItem('reporter')
+            form.addEventListener('submit', () => {
+                localStorage.setItem('reporter', reporter.value)
+            })
+
+            const lastReporter = localStorage.getItem('reporter')
+            if (lastReporter) reporter.value = lastReporter
+        </script>
+    </body>
+</html>
