@@ -11,12 +11,12 @@ data "external" "npm_install" {
 }
 
 data "external" "pack" {
-  depends_on  = ["data.external.npm_install"]
-  program = ["sh", "-c", "zip /tmp/statuspage_deploy.zip -FS -r node_modules *.js 1>&2 && node -e \"console.log(JSON.stringify({hash: crypto.createHash('sha256').update(fs.readFileSync('/tmp/statuspage_deploy.zip')).digest('base64')}))\""]
+  depends_on = ["data.external.npm_install"]
+  program    = ["sh", "-c", "zip /tmp/statuspage_deploy.zip -FS -r node_modules *.js 1>&2 && node -e \"console.log(JSON.stringify({hash: crypto.createHash('sha256').update(fs.readFileSync('/tmp/statuspage_deploy.zip')).digest('base64')}))\""]
 }
 
 resource "aws_lambda_function" "statuspage" {
-  depends_on  = ["data.external.pack"]
+  depends_on       = ["data.external.pack"]
   filename         = "/tmp/statuspage_deploy.zip"
   source_code_hash = "${data.external.pack.result["hash"]}"
   handler          = "index.handler"
@@ -45,7 +45,7 @@ data "aws_iam_policy_document" "statuspage_assumerole" {
     principals = [
       {
         type        = "Service"
-        identifiers = ["lambda.amazonaws.com", "apigateway.amazonaws.com", ]
+        identifiers = ["lambda.amazonaws.com", "apigateway.amazonaws.com"]
       },
     ]
 
@@ -90,7 +90,7 @@ data "aws_iam_policy_document" "statuspage_role" {
       "logs:PutLogEvents",
     ]
 
-    resources = [ "*" ]
+    resources = ["*"]
   }
 }
 
@@ -106,7 +106,7 @@ resource "aws_api_gateway_rest_api" "statuspage" {
 }
 
 resource "aws_api_gateway_deployment" "production" {
-  depends_on = [ "aws_api_gateway_method.POST-statuspage-supportrequest" ]
+  depends_on  = ["aws_api_gateway_method.POST-statuspage-supportrequest"]
   rest_api_id = "${aws_api_gateway_rest_api.statuspage.id}"
   stage_name  = "production"
 }
@@ -208,7 +208,6 @@ resource "aws_sns_topic_policy" "sms" {
 
   policy = "${data.aws_iam_policy_document.allow_sms_from_iam.json}"
 }
-
 
 resource "aws_api_gateway_account" "statuspage" {
   cloudwatch_role_arn = "${aws_iam_role.statuspage.arn}"
