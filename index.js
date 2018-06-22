@@ -50,9 +50,9 @@ exports.handler = async function(event, context) {
     const body = main(event)
     return {
       statusCode: 200,
-      body: JSON.stringify(body),
+      body: body,
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'text/plain'
       }
     }
 
@@ -61,11 +61,9 @@ exports.handler = async function(event, context) {
     const statusCode = e.statusCode || 500
     return {
       statusCode,
-      body: JSON.stringify({
-        message: e.statusCode ? e.message : "Internal server error"
-      }),
+      body: e.statusCode ? e.message : "Internal server error",
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'text/plain'
       }
     }
   }
