@@ -30,12 +30,17 @@ resource "aws_lambda_function" "statuspage" {
       SMS_TOPIC   = "${aws_sns_topic.the-fixers-sms.arn}"
       EMAIL_TOPIC = "${aws_sns_topic.the-fixers-email.arn}"
       SLACK_TOKEN = "${data.aws_ssm_parameter.SLACK_TOKEN.value}"
+      SLACK_CHANNEL = "${data.aws_ssm_parameter.SLACK_CHANNEL.value}"
     }
   }
 }
 
 data "aws_ssm_parameter" "SLACK_TOKEN" {
   name  = "statuspage.${terraform.workspace}.SLACK_TOKEN"
+}
+
+data "aws_ssm_parameter" "SLACK_CHANNEL" {
+  name  = "statuspage.${terraform.workspace}.SLACK_CHANNEL"
 }
 
 data "aws_iam_policy_document" "statuspage_assumerole" {
@@ -45,7 +50,7 @@ data "aws_iam_policy_document" "statuspage_assumerole" {
     principals = [
       {
         type        = "Service"
-        identifiers = ["lambda.amazonaws.com", "apigateway.amazonaws.com"]
+        identifiers = ["lambda.amazonaws.com", "apigateway.amazonaws.com", "sns.amazonaws.com"]
       },
     ]
 
@@ -62,18 +67,10 @@ resource "aws_iam_role" "statuspage" {
 data "aws_iam_policy_document" "statuspage_role" {
   statement {
     actions = [
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:DescribeLogGroups",
-      "logs:DescribeLogStreams",
-      "logs:FilterLogEvents",
-      "logs:GetLogEvents",
-      "logs:PutLogEvents",
       "sns:Publish",
     ]
 
     resources = [
-      "arn:aws:logs:us-east-1:887971734956:log-group:/aws/lambda/tf-cloudwatch-notifications:log-stream:*",
       "${aws_sns_topic.the-fixers-email.arn}",
       "${aws_sns_topic.the-fixers-sms.arn}",
     ]

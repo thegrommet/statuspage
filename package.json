@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/thegrommet/statuspage#readme",
   "dependencies": {
-    "@thegrommet/m2css": "^1.0.0"
+    "@slack/client": "^4.3.1",
+    "@thegrommet/m2css": "^1.0.0",
+    "aws-sdk": "^2.262.1"
   }
 }
