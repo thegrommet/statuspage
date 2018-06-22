@@ -2,29 +2,29 @@ const querystring = require('querystring')
 const {inherits} = require('util')
 
 function main(event) {
-  const {description, reporter, priority} = querystring.parse(event.body)
+  const {description, reporter, urgency} = querystring.parse(event.body)
 
-  if (!isValidPriority(priority)) {
-    throw new InvalidRequestError("Invalid priority")
+  if (!isValidUrgency(urgency)) {
+    throw new InvalidRequestError("Invalid urgency")
   }
 
-  sendMessageByPriority({
+  sendMessageByUrgency({
     description,
     reporter
-  }, priority)
+  }, urgency)
 
   return {
     message: "Submission received"
   }
 }
 
-function isValidPriority(priority) {
-	return ['emergency', 'urgent', 'normal'].includes(priority)
+function isValidUrgency(urgency) {
+	return ['emergency', 'urgent', 'normal'].includes(urgency)
 }
 
-function sendMessageByPriority(message, priority) {
+function sendMessageByUrgency(message, urgency) {
   try {
-    switch (priority) {
+    switch (urgency) {
       case 'emergency':
       // post message to sms sns topic and slack
       case 'urgent':
