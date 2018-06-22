@@ -24,6 +24,18 @@ resource "aws_lambda_function" "statuspage" {
   description      = "Status Page"
   function_name    = "tf-statuspage"
   runtime          = "nodejs8.10"
+
+  environment {
+    variables = {
+      SMS_TOPIC   = "${aws_sns_topic.the-fixers-sms.arn}"
+      EMAIL_TOPIC = "${aws_sns_topic.the-fixers-email.arn}"
+      SLACK_TOKEN = "${data.aws_ssm_parameter.SLACK_TOKEN.value}"
+    }
+  }
+}
+
+data "aws_ssm_parameter" "SLACK_TOKEN" {
+  name  = "statuspage.${terraform.workspace}.SLACK_TOKEN"
 }
 
 data "aws_iam_policy_document" "statuspage_assumerole" {
