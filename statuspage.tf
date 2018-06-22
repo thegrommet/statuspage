@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "statuspage_assumerole" {
     principals = [
       {
         type        = "Service"
-        identifiers = ["lambda.amazonaws.com"]
+        identifiers = ["lambda.amazonaws.com", "apigateway.amazonaws.com", ]
       },
     ]
 
@@ -52,8 +52,11 @@ data "aws_iam_policy_document" "statuspage_role" {
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
-      "logs:PutLogEvents",
+      "logs:DescribeLogGroups",
       "logs:DescribeLogStreams",
+      "logs:FilterLogEvents",
+      "logs:GetLogEvents",
+      "logs:PutLogEvents",
       "sns:Publish",
     ]
 
@@ -62,6 +65,20 @@ data "aws_iam_policy_document" "statuspage_role" {
       "${aws_sns_topic.the-fixers-email.arn}",
       "${aws_sns_topic.the-fixers-sms.arn}",
     ]
+  }
+
+  statement {
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
+      "logs:FilterLogEvents",
+      "logs:GetLogEvents",
+      "logs:PutLogEvents",
+    ]
+
+    resources = [ "*" ]
   }
 }
 
@@ -74,6 +91,34 @@ resource "aws_iam_role_policy" "statuspage" {
 resource "aws_api_gateway_rest_api" "statuspage" {
   name        = "statuspage"
   description = "The Grommet Status Page"
+}
+
+resource "aws_api_gateway_deployment" "production" {
+  depends_on = [ "aws_api_gateway_method.POST-statuspage-supportrequest" ]
+  rest_api_id = "${aws_api_gateway_rest_api.statuspage.id}"
+  stage_name  = "production"
+}
+
+resource "aws_api_gateway_resource" "statuspage-supportrequest" {
+  rest_api_id = "${aws_api_gateway_rest_api.statuspage.id}"
+  parent_id   = "${aws_api_gateway_rest_api.statuspage.root_resource_id}"
+  path_part   = "supportrequest"
+}
+
+resource "aws_api_gateway_method" "POST-statuspage-supportrequest" {
+  rest_api_id   = "${aws_api_gateway_rest_api.statuspage.id}"
+  resource_id   = "${aws_api_gateway_resource.statuspage-supportrequest.id}"
+  http_method   = "POST"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "POST-statuspage-supportrequest" {
+  rest_api_id             = "${aws_api_gateway_rest_api.statuspage.id}"
+  resource_id             = "${aws_api_gateway_resource.statuspage-supportrequest.id}"
+  http_method             = "${aws_api_gateway_method.POST-statuspage-supportrequest.http_method}"
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/${aws_lambda_function.statuspage.arn}/invocations"
 }
 
 resource "aws_lambda_permission" "allow_statuspage" {
@@ -150,4 +195,9 @@ resource "aws_sns_topic_policy" "sms" {
   arn = "${aws_sns_topic.the-fixers-sms.arn}"
 
   policy = "${data.aws_iam_policy_document.allow_sms_from_iam.json}"
+}
+
+
+resource "aws_api_gateway_account" "statuspage" {
+  cloudwatch_role_arn = "${aws_iam_role.statuspage.arn}"
 }
