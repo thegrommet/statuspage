@@ -10,6 +10,14 @@
   "bugs": {
     "url": "https://github.com/thegrommet/statuspage/issues"
   },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 8
+    },
+    "env": {
+      "node": true
+    }
+  },
   "scripts": {
     "deploy": "[ -z \"`git status -z`\" ] && ( git create-deploy-branch && git push origin deploy/master:gh-pages ) || ( echo 'Repository is not clean'; exit 1 )"
   },
