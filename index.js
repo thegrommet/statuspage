@@ -13,9 +13,7 @@ function main(event) {
     reporter
   }, urgency)
 
-  return {
-    message: "Submission received"
-  }
+  return "Submission received"
 }
 
 function isValidUrgency(urgency) {
@@ -50,7 +48,7 @@ exports.handler = async function(event, context) {
     const body = main(event)
     return {
       statusCode: 200,
-      body: body,
+      body,
       headers: {
         'content-type': 'text/plain'
       }
