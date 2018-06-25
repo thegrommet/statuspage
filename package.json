@@ -25,6 +25,7 @@
   "dependencies": {
     "@slack/client": "^4.3.1",
     "@thegrommet/m2css": "^1.0.0",
-    "aws-sdk": "^2.262.1"
+    "aws-sdk": "^2.262.1",
+    "make-fetch-happen": "^4.0.1"
   }
 }

@@ -2,6 +2,8 @@ const querystring = require('querystring')
 const {inherits} = require('util')
 const SNS = require('aws-sdk/clients/sns')
 const {WebClient: SlackClient} = require('@slack/client')
+const fetch = require('make-fetch-happen')
+const url = require('url')
 
 async function main(event) {
   const {description, reporter, urgency} = querystring.parse(event.body)
@@ -26,36 +28,63 @@ async function sendMessageByUrgency({description, reporter}, urgency, retry = fa
   try {
     switch (urgency) {
       case 'emergency':
-        // post message to sms sns topic and slack
-        const sms = {
-          Message: description,
-          Subject: "TESTING",
-          TopicArn: process.env.SMS_TOPIC
+        if (process.env.SMS_TOPIC) {
+          // post message to sms sns topic and slack
+          const sms = {
+            Message: description,
+            Subject: "Request for support",
+            TopicArn: process.env.SMS_TOPIC
+          }
+          await (new SNS()).publish(sms).promise()
         }
-        await (new SNS()).publish(sms).promise()
 
-        const slack = new SlackClient(process.env.SLACK_TOKEN)
-        await slack.chat.postMessage({
-          channel: process.env.SLACK_CHANNEL,
-          text: description 
-        })
-      case 'urgent':
-      // post message to email sns topic
-        const email = {
-          Message: description,
-          Subject: "TESTING",
-          TopicArn: process.env.EMAIL_TOPIC
+        if (process.env.SLACK_TOKEN) {
+          const slack = new SlackClient(process.env.SLACK_TOKEN)
+          await slack.chat.postMessage({
+            channel: process.env.SLACK_CHANNEL,
+            text: description
+          })
         }
-        await (new SNS()).publish(email).promise()
+      case 'urgent':
+        if (process.env.EMAIL_TOPIC) {
+          // post message to email sns topic
+          const email = {
+            Message: description,
+            Subject: "Request for support",
+            TopicArn: process.env.EMAIL_TOPIC
+          }
+          await (new SNS()).publish(email).promise()
+        }
 
       default:
-    // create ticket in jira (Cross-region, so can fail more easily)
+        if (process.env.JIRA_USER && process.env.JIRA_PASSWORD && process.env.JIRA_API_ENDPOINT) {
+          // create ticket in jira (Cross-region, so can fail more easily)
+          await jiraRequest(url.resolve(process.env.JIRA_API_ENDPOINT, '/rest/api/2/issue'), {
+            fields: {
+              project: {
+                key: 'TECH'
+              },
+              summary: "Request for support",
+              labels: ["triage"],
+              description: description + "\n\n" + `Reported by ${reporter}`,
+              issuetype: {
+                name: 'Task'
+              },
+              components: [{
+                name: "DevOps"
+              }]
+            }
+          })
+        }
     }
   } catch (e) {
-    console.warn(e.stack)
+    console.warn(`Error sending message the first time: ${e.stack}`)
     if (!retry) {
       // send emergency message about posting failure, including original request
-      await sendMessageByUrgency("Initial attempt to notify failed! Treating as emergency.\n" + message, 'emergency', true)
+      await sendMessageByUrgency({
+        reporter,
+        description: "Initial attempt to notify failed! Treating as emergency.\n" + description
+      }, 'emergency', true)
     }
     throw e
   }
@@ -93,3 +122,35 @@ exports.handler = async function(event, context) {
   }
 }
 
+
+async function jiraRequest(url, body) {
+  console.warn({
+    request: body
+  })
+  const auth = Buffer.from(`${process.env.JIRA_USER}:${process.env.JIRA_PASSWORD}`).toString('base64')
+  const req = {
+    body: JSON.stringify(body),
+    method: body ? 'POST' : 'GET',
+    headers: {
+      'content-type': 'application/json',
+      'authorization': `Basic ${auth}`
+    }
+  }
+  const res = await fetch(url, req)
+  if (res.ok) {
+    const ret = res.json()
+    console.warn({
+      response: ret
+    })
+    return ret
+  } else {
+    const err = await res.json()
+    console.warn({
+      response: err
+    })
+    const errMessage = err && err.errorMessages ? err.errorMessages.join('\n') : res.statusText
+    throw Object.assign(new Error(errMessage), {
+      statusCode: res.status
+    })
+  }
+}

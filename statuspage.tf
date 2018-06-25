@@ -27,20 +27,35 @@ resource "aws_lambda_function" "statuspage" {
 
   environment {
     variables = {
-      SMS_TOPIC   = "${aws_sns_topic.the-fixers-sms.arn}"
-      EMAIL_TOPIC = "${aws_sns_topic.the-fixers-email.arn}"
-      SLACK_TOKEN = "${data.aws_ssm_parameter.SLACK_TOKEN.value}"
-      SLACK_CHANNEL = "${data.aws_ssm_parameter.SLACK_CHANNEL.value}"
+      SMS_TOPIC         = "${aws_sns_topic.the-fixers-sms.arn}"
+      EMAIL_TOPIC       = "${aws_sns_topic.the-fixers-email.arn}"
+      SLACK_TOKEN       = "${data.aws_ssm_parameter.SLACK_TOKEN.value}"
+      SLACK_CHANNEL     = "${data.aws_ssm_parameter.SLACK_CHANNEL.value}"
+      JIRA_USER         = "${data.aws_ssm_parameter.JIRA_USER.value}"
+      JIRA_PASSWORD     = "${data.aws_ssm_parameter.JIRA_PASSWORD.value}"
+      JIRA_API_ENDPOINT = "${data.aws_ssm_parameter.JIRA_API_ENDPOINT.value}"
     }
   }
 }
 
 data "aws_ssm_parameter" "SLACK_TOKEN" {
-  name  = "statuspage.${terraform.workspace}.SLACK_TOKEN"
+  name = "statuspage.${terraform.workspace}.SLACK_TOKEN"
 }
 
 data "aws_ssm_parameter" "SLACK_CHANNEL" {
-  name  = "statuspage.${terraform.workspace}.SLACK_CHANNEL"
+  name = "statuspage.${terraform.workspace}.SLACK_CHANNEL"
+}
+
+data "aws_ssm_parameter" "JIRA_USER" {
+  name = "statuspage.${terraform.workspace}.JIRA_USER"
+}
+
+data "aws_ssm_parameter" "JIRA_PASSWORD" {
+  name = "statuspage.${terraform.workspace}.JIRA_PASSWORD"
+}
+
+data "aws_ssm_parameter" "JIRA_API_ENDPOINT" {
+  name = "statuspage.${terraform.workspace}.JIRA_API_ENDPOINT"
 }
 
 data "aws_iam_policy_document" "statuspage_assumerole" {
