@@ -5,6 +5,11 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="node_modules/@thegrommet/m2css/css/app.css">
         <style>
+            .x-container { max-width: 960px; margin-left: auto; margin-right: auto; }
+            @media (max-width: 1000px) {
+                .x-container { max-width: unset; margin-left: 40px; margin-right: 40px;  }
+            }
+
             .x-form-group { display: block }
             .x-form-label { font-size: 14px; padding-bottom: 2px; display: block }
             .x-form-field { width: 100%; padding: 8px; font-size: 16px; border-radius: 2px; border: 1px solid #ccc; resize: none; }
@@ -38,20 +43,20 @@
             }
         </style>
     </head>
-    <body class='f-body'>
+    <body class='f-body x-container'>
         <div class="flex-row flex-justify-center">
-            <h1 class='f-title flex-6-12'>Report a Problem</h1>
+            <h1 class='f-title flex-8-12 flex-6-8-tablet'>Report a Problem</h1>
         </div>
 
         <div class="flex-row flex-justify-center">
-            <div class="flex-6-12 m-t-l">
+            <div class="flex-8-12 flex-6-8-tablet m-t-l">
                 We're aware of the issue affecting the frobnicator, see slack for updates. — Aria
             </div>
         </div>
 
         <div class='flex-row flex-justify-center'>
 
-            <form id="report-form" action='https://apinqlzqgh.execute-api.us-east-2.amazonaws.com/production/supportrequest' method='POST' class='flex-6-12 flex-row flex-wrap f-body'>
+            <form id="report-form" action='https://apinqlzqgh.execute-api.us-east-2.amazonaws.com/production/supportrequest' method='POST' class='flex-8-12 flex-6-8-tablet flex-row flex-wrap f-body'>
                 <div class="x-form-group flex-6-12 flex-6-8-tablet flex-8-8-phone m-t-l" >
                     <label for="reporter" class="x-form-label"> Your email address </label>
                     <input type="email" required id="reporter" name="reporter" class='x-form-field' placeholder="jules@thegrommet.com">
