@@ -136,6 +136,22 @@ resource "aws_api_gateway_method" "POST-statuspage-supportrequest" {
   authorization = "NONE"
 }
 
+resource "aws_api_gateway_method" "OPTIONS-statuspage-supportrequest" {
+  rest_api_id   = "${aws_api_gateway_rest_api.statuspage.id}"
+  resource_id   = "${aws_api_gateway_resource.statuspage-supportrequest.id}"
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "OPTIONS-statuspage-supportrequest" {
+  rest_api_id             = "${aws_api_gateway_rest_api.statuspage.id}"
+  resource_id             = "${aws_api_gateway_resource.statuspage-supportrequest.id}"
+  http_method             = "${aws_api_gateway_method.OPTIONS-statuspage-supportrequest.http_method}"
+  integration_http_method = "OPTIONS"
+  type                    = "AWS_PROXY"
+  uri                     = "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/${aws_lambda_function.statuspage.arn}/invocations"
+}
+
 resource "aws_api_gateway_integration" "POST-statuspage-supportrequest" {
   rest_api_id             = "${aws_api_gateway_rest_api.statuspage.id}"
   resource_id             = "${aws_api_gateway_resource.statuspage-supportrequest.id}"

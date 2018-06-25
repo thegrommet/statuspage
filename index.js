@@ -4,9 +4,10 @@ const SNS = require('aws-sdk/clients/sns')
 const {WebClient: SlackClient} = require('@slack/client')
 const fetch = require('make-fetch-happen')
 const url = require('url')
+const multipart = require('aws-lambda-multipart-parser')
 
 async function main(event) {
-  const {description, reporter, urgency} = querystring.parse(event.body)
+  const {description, reporter, urgency} = /^multipart/.test(event.headers['content-type']) ? multipart.parse(event) : querystring.parse(event.body)
 
   if (!isValidUrgency(urgency)) {
     throw new InvalidRequestError("Invalid urgency")
@@ -98,15 +99,29 @@ class InvalidRequestError extends Error {
   }
 }
 
+const headers = {
+  'Content-Type': 'text/plain',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST,OPTIONS'
+}
+
 exports.handler = async function(event, context) {
+  console.warn(JSON.stringify(event))
+  if (event.httpMethod == "OPTIONS") {
+    return {
+      statusCode: 200,
+      body: '',
+      headers
+    }
+  }
+
   try {
     const body = await main(event)
     return {
       statusCode: 200,
       body,
-      headers: {
-        'content-type': 'text/plain'
-      }
+      headers
     }
 
   } catch (e) {
@@ -115,9 +130,7 @@ exports.handler = async function(event, context) {
     return {
       statusCode,
       body: e.statusCode ? e.message : "Internal server error",
-      headers: {
-        'content-type': 'text/plain'
-      }
+      headers
     }
   }
 }
@@ -138,7 +151,7 @@ async function jiraRequest(url, body) {
   }
   const res = await fetch(url, req)
   if (res.ok) {
-    const ret = res.json()
+    const ret = await res.json()
     console.warn({
       response: ret
     })
