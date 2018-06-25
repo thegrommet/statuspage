@@ -8,6 +8,34 @@
             .x-form-group { display: block }
             .x-form-label { font-size: 14px; padding-bottom: 2px; display: block }
             .x-form-field { width: 100%; padding: 8px; font-size: 16px; border-radius: 2px; border: 1px solid #ccc; resize: none; }
+            .x-form-output { width: 100%; padding: 8px; font-size: 16px; border-radius: 2px; margin-bottom: 4px }
+            .x-form-output:empty::after { content: "\00A0" }
+            .x-form-field:invalid, .x-form-output:invalid, .x-form-output.has-error, .x-form-field.has-error { color: #800; }
+            @keyframes working {
+                from {
+                    transform: translateX(-300%) scaleY(2);
+                }
+
+                50% {
+                    transform: translateX(0%) scaleY(1);
+                }
+
+                to {
+                    transform: translateX(300%) scaleY(2);
+                }
+            }
+            .btn.is-working {
+                font-size: 0px;
+            }
+            .btn.is-working>* { display: none }
+            .btn.is-working::before {
+                content: " ";
+                animation: 700ms infinite alternate linear working;
+                align-self: center;
+                width: 10px;
+                height: 10px;
+                background-color: white;
+            }
         </style>
     </head>
     <body class='f-body'>
@@ -26,12 +54,12 @@
             <form id="report-form" action='https://apinqlzqgh.execute-api.us-east-2.amazonaws.com/production/supportrequest' method='POST' class='flex-6-12 flex-row flex-wrap f-body'>
                 <div class="x-form-group flex-6-12 m-t-l" >
                     <label for="reporter" class="x-form-label"> Your email address </label>
-                    <input type="email" id="reporter" name="reporter" class='x-form-field' placeholder="jules@thegrommet.com">
+                    <input type="email" required id="reporter" name="reporter" class='x-form-field' placeholder="jules@thegrommet.com">
                 </div>
 
                 <div class="x-form-group flex-12-12 m-t-l"> 
                     <label for="description" class="x-form-label"> Describe the problem </label>
-                    <textarea name="description" class="x-form-field" rows=10 placeholder="What's wrong, what you expected, what you got instead, and any error numbers or details to help figure it out"></textarea>
+                    <textarea name="description" required class="x-form-field" rows=10 placeholder="What's wrong, what you expected, what you got instead, and any error numbers or details to help figure it out"></textarea>
                 </div>
 
                 <fieldset class="m-t-l flex-12-12" style="border: none">
@@ -40,6 +68,8 @@
                     <p><label><input type="radio" name="urgency" value="urgent"> Next business day</label></p>
                     <p><label><input type="radio" name="urgency" value="normal" checked> This week</label></p>
                 </fieldset>
+
+                <output class="x-form-output" name="message"></output>
 
                 <div class="flex-12-12 flex-row flex-justify-end">
                     <button type='submit' class='btn btn-m btn-txt btn-primary'>Send</button>
@@ -54,7 +84,43 @@
             })
 
             const lastReporter = localStorage.getItem('reporter')
-            if (lastReporter) reporter.value = lastReporter
+            if (lastReporter) {
+                reporter.setAttribute('value', lastReporter)
+                reporter.value = lastReporter
+            }
+        </script>
+
+        <script type="module">
+            const form = document.getElementById('report-form')
+            const submit = form.querySelector('[type=submit]')
+            const output = form.elements.namedItem('message')
+            form.addEventListener('change', () => {
+                output.classList.remove('has-error')
+                output.value = ''
+            })
+            form.addEventListener('submit', async e => {
+                e.preventDefault()
+
+                const fd = new FormData(form)
+                try {
+                    output.classList.remove('has-error')
+                    output.value = ''
+                    submit.disabled = true
+                    submit.classList.add('is-working')
+                    const res = await fetch(form.action, { method: form.method, body: fd })
+                    const result = await res.text()
+                    submit.classList.remove('is-working')
+                    submit.disabled = false
+                    form.reset()
+                    output.value = result
+                } catch (e) {
+                    submit.disabled = false
+                    submit.classList.remove('is-working')
+                    output.classList.add('has-error')
+                    output.value = e.message
+                    console.warn(e)
+                }
+            })
         </script>
     </body>
 </html>
