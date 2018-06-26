@@ -19,7 +19,7 @@
     }
   },
   "scripts": {
-    "deploy": "[ -z \"`git status -z`\" ] && ( git create-deploy-branch && git push origin deploy/master:gh-pages ) || ( echo 'Repository is not clean'; exit 1 )"
+    "deploy": "[ -z \"`git status -z`\" ] && ( git fetch origin gh-pages:deploy/master && git create-deploy-branch && git push origin deploy/master:gh-pages ) || ( echo 'Repository is not clean'; exit 1 )"
   },
   "homepage": "https://github.com/thegrommet/statuspage#readme",
   "dependencies": {
