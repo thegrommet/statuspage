@@ -119,7 +119,11 @@
                     submit.classList.remove('is-working')
                     submit.disabled = false
                     form.reset()
-                    output.value = result
+                    if (/text\/html/.test(res.headers.get('content-type'))) {
+                        output.innerHTML = result
+                    } else {
+                        output.value = result
+                    }
                 } catch (e) {
                     submit.disabled = false
                     submit.classList.remove('is-working')
