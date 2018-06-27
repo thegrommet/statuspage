@@ -6,13 +6,6 @@ const fetch = require('make-fetch-happen')
 const url = require('url')
 const multipart = require('aws-lambda-multipart-parser')
 
-const headers = {
-  'Content-Type': 'text/plain',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST,OPTIONS'
-}
-
 async function main(event) {
   const {description, reporter, urgency} = /^multipart/.test(event.headers['content-type']) ? multipart.parse(event) : querystring.parse(event.body)
 
@@ -20,12 +13,12 @@ async function main(event) {
     throw new InvalidRequestError("Invalid urgency")
   }
 
-  const message = await sendMessageByUrgency({
+  await sendMessageByUrgency({
     description,
     reporter
   }, urgency)
 
-  return message || "Submission received"
+  return "Submission received"
 }
 
 function isValidUrgency(urgency) {
@@ -67,14 +60,14 @@ async function sendMessageByUrgency({description, reporter}, urgency, retry = fa
       default:
         if (process.env.JIRA_USER && process.env.JIRA_PASSWORD && process.env.JIRA_API_ENDPOINT) {
           // create ticket in jira (Cross-region, so can fail more easily)
-          const {key: ticket} = await jiraRequest(url.resolve(process.env.JIRA_API_ENDPOINT, '/rest/api/2/issue'), {
+          await jiraRequest(url.resolve(process.env.JIRA_API_ENDPOINT, '/rest/api/2/issue'), {
             fields: {
               project: {
                 key: 'TECH'
               },
               summary: "Request for support",
               labels: ["triage"],
-              description: `${description}\n\nReported by ${reporter}\nExpected Reply ${humanUrgency(urgency)}`,
+              description: description + "\n\n" + `Reported by ${reporter}`,
               issuetype: {
                 name: 'Task'
               },
@@ -83,14 +76,6 @@ async function sendMessageByUrgency({description, reporter}, urgency, retry = fa
               }]
             }
           })
-
-          return {
-            statusCode: 200,
-            body: `A JIRA ticket has been created. <a href='${url.resolve(process.env.JIRA_API_ENDPOINT, `/browse/${ticket}`)}'>${ticket}</a>`,
-            headers: Object.assign({}, headers, {
-              'content-type': 'text/html'
-            })
-          }
         }
     }
   } catch (e) {
@@ -114,6 +99,13 @@ class InvalidRequestError extends Error {
   }
 }
 
+const headers = {
+  'Content-Type': 'text/plain',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST,OPTIONS'
+}
+
 exports.handler = async function(event, context) {
   console.warn(JSON.stringify(event))
   if (event.httpMethod == "OPTIONS") {
@@ -126,11 +118,11 @@ exports.handler = async function(event, context) {
 
   try {
     const body = await main(event)
-    return typeof body == 'string' ? {
+    return {
       statusCode: 200,
       body,
       headers
-    } : body
+    }
 
   } catch (e) {
     console.warn(e.stack)
@@ -174,11 +166,4 @@ async function jiraRequest(url, body) {
       statusCode: res.status
     })
   }
-}
-
-function humanUrgency(urgency) {
-  if (urgency == 'emergency') return 'ASAP'
-  if (urgency == 'urgent') return 'Next business day'
-  if (urgency == 'normal') return 'This week'
-  return 'Unknown'
 }
