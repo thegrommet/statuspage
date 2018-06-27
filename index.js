@@ -4,7 +4,6 @@ const SNS = require('aws-sdk/clients/sns')
 const {WebClient: SlackClient} = require('@slack/client')
 const fetch = require('make-fetch-happen')
 const url = require('url')
-const multipart = require('aws-lambda-multipart-parser')
 
 const headers = {
   'Content-Type': 'text/plain',
@@ -14,7 +13,7 @@ const headers = {
 }
 
 async function main(event) {
-  const {description, reporter, urgency} = /^multipart/.test(event.headers['content-type']) ? multipart.parse(event) : querystring.parse(event.body)
+  const {description, reporter, urgency} = querystring.parse(event.body)
 
   if (!isValidUrgency(urgency)) {
     throw new InvalidRequestError("Invalid urgency")
@@ -34,55 +33,78 @@ function isValidUrgency(urgency) {
 
 async function sendMessageByUrgency({description, reporter}, urgency, retry = false) {
   try {
-    switch (urgency) {
-      case 'emergency':
-        if (process.env.SMS_TOPIC) {
-          // post message to sms sns topic and slack
-          const sms = {
-            Message: description,
-            Subject: "Request for support",
-            TopicArn: process.env.SMS_TOPIC
-          }
-          await (new SNS()).publish(sms).promise()
-        }
 
-        if (process.env.SLACK_TOKEN) {
-          const slack = new SlackClient(process.env.SLACK_TOKEN)
-          await slack.chat.postMessage({
-            channel: process.env.SLACK_CHANNEL,
-            text: description
-          })
-        }
-      case 'urgent':
-        if (process.env.EMAIL_TOPIC) {
-          // post message to email sns topic
-          const email = {
-            Message: description,
-            Subject: "Request for support",
-            TopicArn: process.env.EMAIL_TOPIC
-          }
-          await (new SNS()).publish(email).promise()
-        }
+    let ticket = null
 
-      default:
-        if (process.env.JIRA_USER && process.env.JIRA_PASSWORD && process.env.JIRA_API_ENDPOINT) {
-          // create ticket in jira (Cross-region, so can fail more easily)
-          const {key: ticket} = await jiraRequest(url.resolve(process.env.JIRA_API_ENDPOINT, '/rest/api/2/issue'), {
-            fields: {
-              project: {
-                key: 'TECH'
-              },
-              summary: "Request for support",
-              labels: ["triage"],
-              description: `${description}\n\nReported by ${reporter}\nExpected Reply ${humanUrgency(urgency)}`,
-              issuetype: {
-                name: 'Task'
-              },
-              components: [{
-                name: "DevOps"
-              }]
+    try {
+      if (process.env.JIRA_USER && process.env.JIRA_PASSWORD && process.env.JIRA_API_ENDPOINT) {
+        // create ticket in jira (Cross-region, so can fail more easily)
+        (
+        {key: ticket} = await jiraRequest(url.resolve(process.env.JIRA_API_ENDPOINT, '/rest/api/2/issue'), {
+          fields: {
+            project: {
+              key: 'TECH'
+            },
+            summary: "Request for support",
+            labels: ["triage"],
+            description: `${description}
+
+Reported by ${reporter}
+Expected Reply ${humanUrgency(urgency)}`,
+            issuetype: {
+              name: 'Task'
+            },
+            components: [{
+              name: "DevOps"
+            }]
+          }
+        }))
+      } else {
+        console.warn("Skipping JIRA, no configuration present")
+      }
+    } finally {
+
+      switch (urgency) {
+        case 'emergency':
+          if (process.env.SMS_TOPIC) {
+            // post message to sms sns topic and slack
+            const sms = {
+              Message: `Eng support request (ticket ${ticket}): ${description}`,
+              Subject: "Engineering Support Request",
+              TopicArn: process.env.SMS_TOPIC
             }
-          })
+            await (new SNS()).publish(sms).promise()
+          } else {
+            console.warn("Skipping SMS, no SMS topic configured")
+          }
+
+          if (process.env.SLACK_TOKEN) {
+            const slack = new SlackClient(process.env.SLACK_TOKEN)
+            await slack.chat.postMessage({
+              channel: process.env.SLACK_CHANNEL,
+              text: `${description}
+
+Reported by ${reporter}
+
+Ticket ${ticket}`
+            })
+          } else {
+            console.warn("Skipping slack, no token present")
+          }
+        case 'urgent':
+          if (process.env.EMAIL_TOPIC) {
+            // post message to email sns topic
+            const email = {
+              Message: description,
+              Subject: "Engineering Support Request",
+              TopicArn: process.env.EMAIL_TOPIC
+            }
+            await (new SNS()).publish(email).promise()
+          } else {
+            console.warn("Skipping email, no email topic configured")
+          }
+
+        default:
 
           return {
             statusCode: 200,
@@ -91,7 +113,7 @@ async function sendMessageByUrgency({description, reporter}, urgency, retry = fa
               'content-type': 'text/html'
             })
           }
-        }
+      }
     }
   } catch (e) {
     console.warn(`Error sending message the first time: ${e.stack}`)
