@@ -149,7 +149,7 @@ resource "aws_api_gateway_integration" "OPTIONS-statuspage-supportrequest" {
   http_method             = "${aws_api_gateway_method.OPTIONS-statuspage-supportrequest.http_method}"
   integration_http_method = "OPTIONS"
   type                    = "AWS_PROXY"
-  uri                     = "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/${aws_lambda_function.statuspage.arn}/invocations"
+  uri                     = "${aws_lambda_function.statuspage.invoke_arn}"
 }
 
 resource "aws_api_gateway_integration" "POST-statuspage-supportrequest" {
@@ -158,7 +158,7 @@ resource "aws_api_gateway_integration" "POST-statuspage-supportrequest" {
   http_method             = "${aws_api_gateway_method.POST-statuspage-supportrequest.http_method}"
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/${aws_lambda_function.statuspage.arn}/invocations"
+  uri                     = "${aws_lambda_function.statuspage.invoke_arn}"
 }
 
 resource "aws_lambda_permission" "allow_statuspage" {

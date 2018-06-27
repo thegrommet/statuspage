@@ -59,7 +59,7 @@ Terraform to push to AWS
 
 Form hosted in Github (`internalsupport.thegrommet.com`?), so it works even if Amazon us-east-1 goes bananas.
 
-Posts to a lambda function hosted in us-east-2
+Posts to a lambda function hosted in us-west-2
 
 ## Logic
 
