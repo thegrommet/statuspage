@@ -108,7 +108,7 @@
             form.addEventListener('submit', async e => {
                 e.preventDefault()
 
-                const fd = new FormData(form)
+                const fd = new URLSearchParams(new FormData(form))
                 try {
                     output.classList.remove('has-error')
                     output.value = ''

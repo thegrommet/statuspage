@@ -4,7 +4,6 @@ const SNS = require('aws-sdk/clients/sns')
 const {WebClient: SlackClient} = require('@slack/client')
 const fetch = require('make-fetch-happen')
 const url = require('url')
-const multipart = require('aws-lambda-multipart-parser')
 
 const headers = {
   'Content-Type': 'text/plain',
@@ -14,7 +13,7 @@ const headers = {
 }
 
 async function main(event) {
-  const {description, reporter, urgency} = /^multipart/.test(event.headers['content-type']) ? multipart.parse(event) : querystring.parse(event.body)
+  const {description, reporter, urgency} = querystring.parse(event.body)
 
   if (!isValidUrgency(urgency)) {
     throw new InvalidRequestError("Invalid urgency")
