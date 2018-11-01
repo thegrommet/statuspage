@@ -26,6 +26,7 @@
     "@slack/client": "^4.3.1",
     "@thegrommet/m2css": "^1.0.0",
     "aws-sdk": "^2.262.1",
+    "git-create-deploy-branch": "^1.1.0",
     "make-fetch-happen": "^4.0.1"
   }
 }
