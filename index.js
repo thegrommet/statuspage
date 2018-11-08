@@ -13,7 +13,7 @@ const headers = {
 }
 
 async function main(event) {
-  const {description, reporter, urgency} = querystring.parse(event.body)
+  const {description, reporter, summary, urgency} = querystring.parse(event.body)
 
   if (!isValidUrgency(urgency)) {
     throw new InvalidRequestError("Invalid urgency")
@@ -21,14 +21,15 @@ async function main(event) {
 
   const message = await sendMessageByUrgency({
     description,
-    reporter
+    reporter,
+    summary
   }, urgency)
 
   return message || "Submission received"
 }
 
 function isValidUrgency(urgency) {
-  return ['emergency', 'urgent', 'normal'].includes(urgency)
+  return ['emergency', 'urgent', 'normal', 'low'].includes(urgency)
 }
 
 async function sendMessageByUrgency({description, reporter}, urgency, retry = false) {
@@ -46,7 +47,7 @@ async function sendMessageByUrgency({description, reporter}, urgency, retry = fa
               key: 'TECH'
             },
             summary: "Request for support",
-            labels: ["triage"],
+            labels: ["triage", "engsupport"],
             description: `${description}
 
 Reported by ${reporter}
@@ -55,7 +56,7 @@ Expected Reply ${humanUrgency(urgency)}`,
               name: 'Task'
             },
             components: [{
-              name: "DevOps"
+              name: "Other"
             }]
           }
         }))
@@ -202,5 +203,6 @@ function humanUrgency(urgency) {
   if (urgency == 'emergency') return 'ASAP'
   if (urgency == 'urgent') return 'Next business day'
   if (urgency == 'normal') return 'This week'
+  if (urgency == 'low') return 'Standard -- not urgent'
   return 'Unknown'
 }
