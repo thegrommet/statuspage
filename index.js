@@ -32,7 +32,7 @@ function isValidUrgency(urgency) {
   return ['emergency', 'urgent', 'normal', 'low'].includes(urgency)
 }
 
-async function sendMessageByUrgency({description, reporter}, urgency, retry = false) {
+async function sendMessageByUrgency({description, reporter, summary}, urgency, retry = false) {
   try {
 
     let ticket = null
@@ -46,7 +46,7 @@ async function sendMessageByUrgency({description, reporter}, urgency, retry = fa
             project: {
               key: 'TECH'
             },
-            summary: "Request for support",
+            summary: summary,
             labels: ["triage", "engsupport"],
             description: `${description}
 
@@ -203,6 +203,6 @@ function humanUrgency(urgency) {
   if (urgency == 'emergency') return 'ASAP'
   if (urgency == 'urgent') return 'Next business day'
   if (urgency == 'normal') return 'This week'
-  if (urgency == 'low') return 'Standard -- not urgent'
+  if (urgency == 'low') return 'Standard — not urgent'
   return 'Unknown'
 }
