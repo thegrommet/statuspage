@@ -19,14 +19,14 @@
     }
   },
   "scripts": {
-    "deploy": "[ -z \"`git status -z`\" ] && ( git fetch origin gh-pages:deploy/master && git create-deploy-branch && git push origin deploy/master:gh-pages ) || ( echo 'Repository is not clean'; exit 1 )"
+    "deploy": "[ -z \"`git status -z`\" ] && ( git create-deploy-branch && git push origin deploy/master:gh-pages ) || ( echo 'Repository is not clean'; exit 1 )"
   },
   "homepage": "https://github.com/thegrommet/statuspage#readme",
   "dependencies": {
     "@slack/client": "^4.3.1",
     "@thegrommet/m2css": "^1.0.0",
+    "aws-lambda-multipart-parser": "^0.1.2",
     "aws-sdk": "^2.262.1",
-    "git-create-deploy-branch": "^1.1.0",
     "make-fetch-happen": "^4.0.1"
   }
 }
