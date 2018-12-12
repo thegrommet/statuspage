@@ -44,7 +44,7 @@ async function sendMessageByUrgency({description, reporter, summary}, urgency, r
         {key: ticket} = await jiraRequest(url.resolve(process.env.JIRA_API_ENDPOINT, '/rest/api/2/issue'), {
           fields: {
             project: {
-              key: 'TECH'
+              key: 'GROM'
             },
             summary: summary,
             labels: ["triage", "engsupport"],
@@ -55,8 +55,8 @@ Expected Reply ${humanUrgency(urgency)}`,
             issuetype: {
               name: 'Task'
             },
-            components: [{
-              name: "Other"
+            customfield_10101: [{
+              name: "Engineering"
             }]
           }
         }))
