@@ -1,5 +1,5 @@
 provider "aws" {
-  region  = "us-west-2"
+  region  = "us-east-2"
   profile = "thegrommet"
   version = "~> 1.24"
 }
