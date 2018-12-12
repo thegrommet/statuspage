@@ -55,9 +55,9 @@ Expected Reply ${humanUrgency(urgency)}`,
             issuetype: {
               name: 'Task'
             },
-            customfield_10101: [{
-              name: "Engineering"
-            }]
+            customfield_10101: {
+              "value": "10723"
+            }
           }
         }))
       } else {
