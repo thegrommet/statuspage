@@ -1,0 +1,465 @@
+/*
+ * ======================
+ * Style guide classes
+ * ======================
+ */
+.example-background { min-width: 10em; min-height: 4em;}
+.example-box-border {border: 1px solid black; }
+.example-box { display: flex; justify-content: center; }
+.example-graph-paper { background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjIwIiBoZWlnaHQ9IjEiIGZpbGw9IiNiYmIiIC8+CiAgPHJlY3Qgd2lkdGg9IjEiIGhlaWdodD0iMjAiIGZpbGw9IiNiYmIiIC8+Cjwvc3ZnPg==")}
+
+/*
+ * ======================
+ * Color classes
+ * ======================
+ */
+:root {
+    --color-white: white;
+    --color-grommet-blue: #0098da;
+    --color-dark-blue: #004e64;
+    --color-seafoam-green: #30c594;
+    --color-seafoam-green-hover: #009261;
+    --color-seafoam-green-disabled: #30c59480;
+    --color-dark-seafoam-green: #159a6e;
+    --color-coral: #f67864;
+    --color-coral-hover: #c34531;
+    --color-coral-disabled: #F6786480;
+    --color-beige: #f5f2ed;
+    --color-beige-hover: #dcd9d4;
+    --color-grey-5: #525252;
+    --color-grey-6: #6e6f71;
+    --color-grey-9: #9b9b9b;
+}
+
+/* text colors */
+.txt-white {color: white;}
+.txt-grommet-blue {color: var(--color-grommet-blue);}
+.txt-dark-blue {color: var(--color-dark-blue);}
+.txt-seafoam-green {color: var(--color-seafoam-green);}
+.txt-dark-seafoam-green {color: var(--color-dark-seafoam-green);}
+.txt-coral {color: var(--color-coral);}
+.txt-beige {color: var(--color-beige);}
+.txt-grey-5 {color: var(--color-grey-5);}
+.txt-grey-6 {color: var(--color-grey-6);}
+
+/* background colors */
+.bg-white {background-color: white;}
+.bg-grommet-blue {background-color: var(--color-grommet-blue);}
+.bg-dark-blue {background-color: var(--color-dark-blue);}
+.bg-seafoam-green {background-color: var(--color-seafoam-green);}
+.bg-coral {background-color: var(--color-coral);}
+.bg-beige {background-color: var(--color-beige);}
+.bg-grey-6 {background-color: var(--color-grey-6);}
+
+/*
+ * ======================
+ * Padding classes
+ * ======================
+ */
+.p-0 { padding: 0px !important }
+.p-xs { padding: 5px !important }
+.p-s { padding: 10px !important }
+.p-m { padding: 20px !important }
+.p-l { padding: 30px !important }
+.p-xl { padding: 40px !important }
+.p-r-0 { padding-right: 0px !important }
+.p-r-xs { padding-right: 5px !important }
+.p-r-s { padding-right: 10px !important }
+.p-r-m { padding-right: 20px !important }
+.p-r-l { padding-right: 30px !important }
+.p-r-xl { padding-right: 40px !important }
+.p-l-0 { padding-left: 0px !important }
+.p-l-xs { padding-left: 5px !important }
+.p-l-s { padding-left: 10px !important }
+.p-l-m { padding-left: 20px !important }
+.p-l-l { padding-left: 30px !important }
+.p-l-xl { padding-left: 40px !important }
+.p-b-0 { padding-bottom: 0px !important }
+.p-b-xs { padding-bottom: 5px !important }
+.p-b-s { padding-bottom: 10px !important }
+.p-b-m { padding-bottom: 20px !important }
+.p-b-l { padding-bottom: 30px !important }
+.p-b-xl { padding-bottom: 40px !important }
+.p-t-0 { padding-top: 0px !important }
+.p-t-xs { padding-top: 5px !important }
+.p-t-s { padding-top: 10px !important }
+.p-t-m { padding-top: 20px !important }
+.p-t-l { padding-top: 30px !important }
+.p-t-xl { padding-top: 40px !important }
+
+@media screen and (max-width: 800px) {
+ .p-0-tablet { padding: 0px !important }
+ .p-xs-tablet { padding: 5px !important }
+ .p-s-tablet { padding: 10px !important }
+ .p-m-tablet { padding: 20px !important }
+ .p-l-tablet { padding: 30px !important }
+ .p-xl-tablet { padding: 40px !important }
+ .p-r-0-tablet { padding-right: 0px !important }
+ .p-r-xs-tablet { padding-right: 5px !important }
+ .p-r-s-tablet { padding-right: 10px !important }
+ .p-r-m-tablet { padding-right: 20px !important }
+ .p-r-l-tablet { padding-right: 30px !important }
+ .p-r-xl-tablet { padding-right: 40px !important }
+ .p-l-0-tablet { padding-left: 0px !important }
+ .p-l-xs-tablet { padding-left: 5px !important }
+ .p-l-s-tablet { padding-left: 10px !important }
+ .p-l-m-tablet { padding-left: 20px !important }
+ .p-l-l-tablet { padding-left: 30px !important }
+ .p-l-xl-tablet { padding-left: 40px !important }
+ .p-b-0-tablet { padding-bottom: 0px !important }
+ .p-b-xs-tablet { padding-bottom: 5px !important }
+ .p-b-s-tablet { padding-bottom: 10px !important }
+ .p-b-m-tablet { padding-bottom: 20px !important }
+ .p-b-l-tablet { padding-bottom: 30px !important }
+ .p-b-xl-tablet { padding-bottom: 40px !important }
+ .p-t-0-tablet { padding-top: 0px !important }
+ .p-t-xs-tablet { padding-top: 5px !important }
+ .p-t-s-tablet { padding-top: 10px !important }
+ .p-t-m-tablet { padding-top: 20px !important }
+ .p-t-l-tablet { padding-top: 30px !important }
+ .p-t-xl-tablet { padding-top: 40px !important }
+}
+
+@media screen and (max-width: 640px) {
+ .p-0-phone { padding: 0px !important }
+ .p-xs-phone { padding: 5px !important }
+ .p-s-phone { padding: 10px !important }
+ .p-m-phone { padding: 20px !important }
+ .p-l-phone { padding: 30px !important }
+ .p-xl-phone { padding: 40px !important }
+ .p-r-0-phone { padding-right: 0px !important }
+ .p-r-xs-phone { padding-right: 5px !important }
+ .p-r-s-phone { padding-right: 10px !important }
+ .p-r-m-phone { padding-right: 20px !important }
+ .p-r-l-phone { padding-right: 30px !important }
+ .p-r-xl-phone { padding-right: 40px !important }
+ .p-l-0-phone { padding-left: 0px !important }
+ .p-l-xs-phone { padding-left: 5px !important }
+ .p-l-s-phone { padding-left: 10px !important }
+ .p-l-m-phone { padding-left: 20px !important }
+ .p-l-l-phone { padding-left: 30px !important }
+ .p-l-xl-phone { padding-left: 40px !important }
+ .p-b-0-phone { padding-bottom: 0px !important }
+ .p-b-xs-phone { padding-bottom: 5px !important }
+ .p-b-s-phone { padding-bottom: 10px !important }
+ .p-b-m-phone { padding-bottom: 20px !important }
+ .p-b-l-phone { padding-bottom: 30px !important }
+ .p-b-xl-phone { padding-bottom: 40px !important }
+ .p-t-0-phone { padding-top: 0px !important }
+ .p-t-xs-phone { padding-top: 5px !important }
+ .p-t-s-phone { padding-top: 10px !important }
+ .p-t-m-phone { padding-top: 20px !important }
+ .p-t-l-phone { padding-top: 30px !important }
+ .p-t-xl-phone { padding-top: 40px !important }
+}
+
+/*
+ * ====================
+ * Margin classes
+ * ====================
+ *
+ * Margin sizes are 0 (none), xs, s, m and l, as well as a for auto.
+ *
+ * Direction indicators are l (left), r (right), t (top), b (bottom)
+ *
+ * Classes are .m-direction-size. The classes without a direction apply to all
+ * directions, but are ordered so they can be overridden by more specific
+ * classes.
+ *
+ * All of the classes have a -tablet version that applies at mobile sizes, and
+ * overrides the large-screen default.
+ */
+.m-a { margin: auto !important }
+.m-0 { margin: 0px !important }
+.m-0-a { margin: 0px auto !important; }
+.m-xs { margin: 5px !important }
+.m-s { margin: 10px !important }
+.m-m { margin: 20px !important }
+.m-l { margin: 30px !important }
+.m-xl { margin: 40px !important }
+.m-l-a { margin-left: auto !important }
+.m-l-0 { margin-left: 0px !important }
+.m-l-xs { margin-left: 5px !important }
+.m-l-s { margin-left: 10px !important }
+.m-l-m { margin-left: 20px !important }
+.m-l-l { margin-left: 30px !important }
+.m-l-xl { margin-left: 40px !important }
+.m-r-a { margin-right: auto !important }
+.m-r-0 { margin-right: 0px !important }
+.m-r-xs { margin-right: 5px !important }
+.m-r-s { margin-right: 10px !important }
+.m-r-m { margin-right: 20px !important }
+.m-r-l { margin-right: 30px !important }
+.m-r-xl { margin-right: 40px !important }
+.m-b-a { margin-bottom: auto !important }
+.m-b-0 { margin-bottom: 0 !important }
+.m-b-xs { margin-bottom: 5px !important }
+.m-b-s { margin-bottom: 10px !important }
+.m-b-m { margin-bottom: 20px !important }
+.m-b-l { margin-bottom: 30px !important }
+.m-b-xl { margin-bottom: 40px !important }
+.m-t-a { margin-top: auto !important }
+.m-t-0 { margin-top: 0px !important }
+.m-t-xs { margin-top: 5px !important }
+.m-t-s { margin-top: 10px !important }
+.m-t-m { margin-top: 20px !important }
+.m-t-l { margin-top: 30px !important }
+.m-t-xl { margin-top: 40px !important }
+
+@media screen and (max-width: 800px) {
+ .m-a-tablet { margin: auto !important }
+ .m-0-tablet { margin: 0px !important }
+ .m-0-a-tablet { margin: 0px auto !important; }
+ .m-xs-tablet { margin: 5px !important }
+ .m-s-tablet { margin: 10px !important }
+ .m-m-tablet { margin: 20px !important }
+ .m-l-tablet { margin: 30px !important }
+ .m-xl-tablet { margin: 40px !important }
+ .m-l-a-tablet { margin-left: auto !important }
+ .m-l-0-tablet { margin-left: 0px !important }
+ .m-l-xs-tablet { margin-left: 5px !important }
+ .m-l-s-tablet { margin-left: 10px !important }
+ .m-l-m-tablet { margin-left: 20px !important }
+ .m-l-l-tablet { margin-left: 30px !important }
+ .m-l-xl-tablet { margin-left: 40px !important }
+ .m-r-a-tablet { margin-right: auto !important }
+ .m-r-0-tablet { margin-right: 0px !important }
+ .m-r-xs-tablet { margin-right: 5px !important }
+ .m-r-s-tablet { margin-right: 10px !important }
+ .m-r-m-tablet { margin-right: 20px !important }
+ .m-r-l-tablet { margin-right: 30px !important }
+ .m-r-xl-tablet { margin-right: 40px !important }
+ .m-b-a-tablet { margin-bottom: auto !important }
+ .m-b-xs-tablet { margin-bottom: 5px !important }
+ .m-b-s-tablet { margin-bottom: 10px !important }
+ .m-b-m-tablet { margin-bottom: 20px !important }
+ .m-b-l-tablet { margin-bottom: 30px !important }
+ .m-b-xl-tablet { margin-bottom: 40px !important }
+ .m-t-a-tablet { margin-top: auto !important }
+ .m-t-xs-tablet { margin-top: 5px !important }
+ .m-t-s-tablet { margin-top: 10px !important }
+ .m-t-m-tablet { margin-top: 20px !important }
+ .m-t-l-tablet { margin-top: 30px !important }
+ .m-t-xl-tablet { margin-top: 40px !important }
+}
+
+@media screen and (max-width: 640px) {
+ .m-a-phone { margin: auto !important }
+ .m-0-phone { margin: 0px !important }
+ .m-0-a-phone { margin: 0px auto !important; }
+ .m-xs-phone { margin: 5px !important }
+ .m-s-phone { margin: 10px !important }
+ .m-m-phone { margin: 20px !important }
+ .m-l-phone { margin: 30px !important }
+ .m-xl-phone { margin: 40px !important }
+ .m-l-a-phone { margin-left: auto !important }
+ .m-l-0-phone { margin-left: 0px !important }
+ .m-l-xs-phone { margin-left: 5px !important }
+ .m-l-s-phone { margin-left: 10px !important }
+ .m-l-m-phone { margin-left: 20px !important }
+ .m-l-l-phone { margin-left: 30px !important }
+ .m-l-xl-phone { margin-left: 40px !important }
+ .m-r-a-phone { margin-right: auto !important }
+ .m-r-0-phone { margin-right: 0px !important }
+ .m-r-xs-phone { margin-right: 5px !important }
+ .m-r-s-phone { margin-right: 10px !important }
+ .m-r-m-phone { margin-right: 20px !important }
+ .m-r-l-phone { margin-right: 30px !important }
+ .m-r-xl-phone { margin-right: 40px !important }
+ .m-b-a-phone { margin-bottom: auto !important }
+ .m-b-xs-phone { margin-bottom: 5px !important }
+ .m-b-s-phone { margin-bottom: 10px !important }
+ .m-b-m-phone { margin-bottom: 20px !important }
+ .m-b-l-phone { margin-bottom: 30px !important }
+ .m-b-xl-phone { margin-bottom: 40px !important }
+ .m-t-a-phone { margin-top: auto !important }
+ .m-t-xs-phone { margin-top: 5px !important }
+ .m-t-s-phone { margin-top: 10px !important }
+ .m-t-m-phone { margin-top: 20px !important }
+ .m-t-l-phone { margin-top: 30px !important }
+ .m-t-xl-phone { margin-top: 40px !important }
+}
+
+/*
+ * ======================
+ * Button classes
+ * ======================
+ */
+ .btn {border-radius: 3px; border: none; display: inline-flex; justify-content: center; align-content: center; text-decoration: none;}
+ .btn:focus {outline: none;}
+ .btn-txt { font: normal 400 14px 'Montserrat', sans-serif; }
+ .btn-s { height: 42px; line-height: 42px; width: 103px; }
+ .btn-m { height: 42px; line-height: 42px; width: 156px; }
+ .btn-l { height: 48px; line-height: 48px; width: 190px; }
+ /* The grid wrappers for buttons keep them on the baseline grid for text. They are inline-flex so that if you overfill the box, the button box breaks but the page rhythm does not. It's a better way to fly. */
+ .btn-sm-grid-wrapper {padding-bottom:24px; margin-top: 20px; margin-bottom: -6px; display: inline-flex }
+ .btn-l-grid-wrapper {padding-bottom:22px; margin-top: 20px; margin-bottom: -10px; display: inline-flex }
+ .btn-primary {background-color: var(--color-coral); color: var(--color-white); box-shadow: 0 1px 2px 0 #00000080; }
+ .btn-primary:hover, .btn-primary:focus {background-color: var(--color-coral-hover);}
+ .btn-primary:active {box-shadow: initial; transform: translateY(1px); outline: initial;}
+ .btn-primary.is-pending {box-shadow: initial;}
+ .btn-primary:disabled {background-color: var(--color-coral-disabled); box-shadow: initial;}
+ .btn-secondary {background-color: var(--color-seafoam-green); color: var(--color-white); box-shadow: 0 1px 2px 0 #00000080; }
+ .btn-secondary:hover, .btn-secondary:focus {background-color: var(--color-seafoam-green-hover);}
+ .btn-secondary:active {box-shadow: initial; transform: translateY(1px); outline: initial;}
+ .btn-secondary.is-pending {box-shadow: initial;}
+ .btn-secondary:disabled {background-color: var(--color-seafoam-green-disabled); box-shadow: initial;}
+ .btn-tertiary {background-color: var(--color-beige); color: var(--color-grey-5); box-shadow: 0 1px 2px 0 #00000080; }
+ .btn-tertiary:hover, .btn-tertiary:focus {background-color: var(--color-beige-hover);}
+ .btn-tertiary:active {box-shadow: initial; transform: translateY(1px); outline: initial;}
+ .btn-tertiary.is-pending {box-shadow: initial;}
+ .btn-tertiary:disabled {background-color: var(--color-beige); box-shadow: initial;}
+
+ /*
+  * ======================
+  * Type styles
+  * ======================
+  */
+  .f-title { font: normal 400 45px/60px 'Roboto Slab', serif; margin-top: 13px; margin-bottom: -13px;}
+  .f-subtitle { font: normal 300 26px/40px 'Roboto Slab', serif; margin-top: 10px; margin-bottom: -10px;}
+  .f-heading { font: normal 300 19px/20px 'Roboto Slab', serif; margin-top: 3px; margin-bottom: -3px;}
+  .f-subheading { font: normal 600 14px/20px 'Montserrat', sans-serif; margin-top: 5px; margin-bottom: -5px; }
+  .f-body { font: normal 400 14px/20px 'Montserrat', sans-serif; margin-top: 6px; margin-bottom: -6px;}
+  .f-caption { font: normal 400 11px/20px 'Montserrat', sans-serif; margin-top: 6px; margin-bottom: -6px; }
+
+  @media screen and (max-width: 800px) {
+      .f-title { font: normal 400 34px/40px 'Roboto Slab', serif; margin-top: 7px; margin-bottom: -7px;}
+      .f-subtitle { font: normal 300 19px/40px 'Roboto Slab', serif; margin-top: 33px; margin-bottom: -13px;}
+      .f-heading { font: normal 400 19px/20px 'Roboto Slab', serif; margin-top: 3px; margin-bottom: -3px;}
+  }
+
+  @media screen and (max-width: 640px) {
+      .f-title { font: normal 400 26px/40px 'Roboto Slab', serif; margin-top: 10px; margin-bottom: -10px;}
+      .f-subtitle { font: normal 300 19px/40px 'Roboto Slab', serif; margin-top: 13px; margin-bottom: -13px;}
+  }
+
+  /* ==================
+   * Text Alignment
+   * ==================
+   */
+  .txt-a-left { text-align: left !important; }
+  .txt-a-center { text-align: center !important; }
+  .txt-a-right { text-align: right !important; }
+
+  @media screen and (max-width: 800px) {
+   .txt-a-left-tablet { text-align: left !important; }
+   .txt-a-center-tablet { text-align: center !important; }
+   .txt-a-right-tablet { text-align: right !important; }
+  }
+
+  @media screen and (max-width: 6400px) {
+   .txt-a-left-phone { text-align: left !important; }
+   .txt-a-center-phone { text-align: center !important; }
+   .txt-a-right-phone { text-align: right !important; }
+  }
+
+  /*
+   * ======================
+   * Grid classes
+   * ======================
+   */
+   .flex-row { display: flex !important; flex-direction: row; }
+   .flex-col { display: flex !important; flex-direction: column; }
+   .flex-row>*, .flex-col>* { flex: 0 0 auto }
+   .flex-1-12 { flex-basis: 8.3333%; }
+   .flex-2-12 { flex-basis: 16.6666%; }
+   .flex-3-12 { flex-basis: 25%; }
+   .flex-4-12 { flex-basis: 33.3333%; }
+   .flex-5-12 { flex-basis: 41.6666%; }
+   .flex-6-12 { flex-basis: 50%; }
+   .flex-7-12 { flex-basis: 58.3333%; }
+   .flex-8-12 { flex-basis: 66.6666% }
+   .flex-9-12 { flex-basis: 75%; }
+   .flex-10-12 { flex-basis: 83.3333%; }
+   .flex-11-12 { flex-basis: 91.6666%; }
+   .flex-12-12 { flex-basis: 100%; }
+   .flex-row.flex-gutters { margin-left: -15px; margin-right: -15px; }
+   .flex-row.flex-gutters>* { box-sizing: border-box; padding-left: 15px; padding-right: 15px; }
+
+   /* Additional flex container properties */
+   .flex-wrap { flex-wrap: wrap; }
+   .flex-nowrap { flex-wrap: nowrap; }
+   .flex-wrap-reverse { flex-wrap: wrap-reverse; }
+   .flex-justify-start { justify-content: flex-start; }
+   .flex-justify-end { justify-content: flex-end; }
+   .flex-justify-center { justify-content: center; }
+   .flex-justify-space-between { justify-content: space-between; }
+   .flex-justify-space-around { justify-content: space-around; }
+   .flex-justify-space-evenly { justify-content: space-evenly; }
+   .flex-align-items-start { align-items: flex-start; }
+   .flex-align-items-end { align-items: flex-end; }
+   .flex-align-items-center { align-items: center; }
+   .flex-align-items-stretch { align-items: stretch; }
+   .flex-align-items-baseline { align-items: baseline; }
+   .flex-align-content-start { align-content: flex-start; }
+   .flex-align-content-end { align-content: flex-end; }
+   .flex-align-content-center { align-content: center; }
+   .flex-align-content-space-between { align-content: space-between; }
+   .flex-align-content-space-around { align-content: space-around; }
+   .flex-align-content-stretch { align-content: stretch; }
+
+   /* Additional flex item properties */
+   .flex-align-self-start { align-self: flex-start;}
+   .flex-align-self-end { align-self: flex-end;}
+   .flex-align-self-center { align-self: center;}
+   .flex-align-self-baseline { align-self: baseline;}
+   .flex-align-self-stretch { align-self: stretch;}
+
+   @media screen and (max-width: 800px) {
+       .flex-row-tablet { display: flex !important; flex-direction: row; }
+       .flex-col-tablet { display: flex !important; flex-direction: column; }
+       .flex-first-tablet { order: -1 }
+       .flex-last-tablet { order: 1 }
+       .flex-1-8-tablet { flex-basis: 12.5%; }
+       .flex-2-8-tablet { flex-basis: 25%; }
+       .flex-3-8-tablet { flex-basis: 37.5%; }
+       .flex-4-8-tablet { flex-basis: 50%; }
+       .flex-5-8-tablet { flex-basis: 62.5% }
+       .flex-6-8-tablet { flex-basis: 75%; }
+       .flex-7-8-tablet { flex-basis: 87.5%; }
+       .flex-8-8-tablet { flex-basis: 100%; }
+       .flex-row.flex-gutters { margin-left: -10px; margin-right: -10px; }
+       .flex-row.flex-gutters>* { box-sizing: border-box; padding-left: 10px; padding-right: 10px; }
+   }
+
+   @media screen and (max-width: 640px) {
+       .flex-row-phone { display: flex !important; flex-direction: row; }
+       .flex-col-phone { display: flex !important; flex-direction: column; }
+       .flex-first-phone { order: -1 }
+       .flex-last-phone { order: 1 }
+       .flex-1-8-phone { flex-basis: 12.5%; }
+       .flex-2-8-phone { flex-basis: 25%; }
+       .flex-3-8-phone { flex-basis: 37.5%; }
+       .flex-4-8-phone { flex-basis: 50%; }
+       .flex-5-8-phone { flex-basis: 62.5% }
+       .flex-6-8-phone { flex-basis: 75%; }
+       .flex-7-8-phone { flex-basis: 87.5%; }
+       .flex-8-8-phone { flex-basis: 100%; }
+   }
+
+   /*
+    * ====================
+    * Media
+    * ====================
+    *
+    * .scale-down makes an image responsive but never scale up
+    */
+   .scale-down { max-width: 100% }
+
+   /*
+    * ======================
+    * Decoration classes
+    * ======================
+    */
+    .horz-rule {height: 2px; border: 0; margin-top: 20px; margin-bottom: -2px;}
+
+    /*
+    * ======================
+    * Product features
+    * ======================
+    */
+    .product-detail-list {list-style: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNiIgd2lkdGg9IjYiPgogIDxjaXJjbGUgY3g9IjMiIGN5PSIzIiByPSIzIiBmaWxsPSIjOWI5YjliIiAvPgo8L3N2Zz4=");}
+    .product-detail-list-item {
+        border-bottom: 1px solid var(--color-grey-9);
+        padding-bottom: 9px !important;
+    }
