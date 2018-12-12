@@ -56,7 +56,7 @@ Expected Reply ${humanUrgency(urgency)}`,
               name: 'Task'
             },
             customfield_10101: {
-              'value': '10723'
+              "value": "Engineering"
             }
           }
         }))
@@ -181,7 +181,6 @@ async function jiraRequest(url, body) {
     }
   }
   const res = await fetch(url, req)
-  console.log(res.json());
   if (res.ok) {
     const ret = await res.json()
     console.warn({
