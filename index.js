@@ -71,7 +71,7 @@ Expected Reply ${humanUrgency(urgency)}`,
             // post message to sms sns topic and slack
             const sms = {
               Message: `Eng support request (ticket ${ticket}): ${description}`,
-              Subject: "Engineering Support Request",
+              Subject: summary,
               TopicArn: process.env.SMS_TOPIC
             }
             await (new SNS()).publish(sms).promise()
@@ -83,7 +83,7 @@ Expected Reply ${humanUrgency(urgency)}`,
             const slack = new SlackClient(process.env.SLACK_TOKEN)
             await slack.chat.postMessage({
               channel: process.env.SLACK_CHANNEL,
-              text: `${description}
+              text: `${summary}: ${description}
 
 Reported by ${reporter}
 
@@ -97,7 +97,7 @@ Ticket ${ticket}`
             // post message to email sns topic
             const email = {
               Message: description,
-              Subject: "Engineering Support Request",
+              Subject: summary,
               TopicArn: process.env.EMAIL_TOPIC
             }
             await (new SNS()).publish(email).promise()
