@@ -70,7 +70,7 @@ Expected Reply ${humanUrgency(urgency)}`,
           if (process.env.SMS_TOPIC) {
             // post message to sms sns topic and slack
             const sms = {
-              Message: `Eng support request (ticket ${ticket}): ${description}`,
+              Message: `Eng support request (${summary}, ticket ${ticket}): ${description}`,
               Subject: summary,
               TopicArn: process.env.SMS_TOPIC
             }
