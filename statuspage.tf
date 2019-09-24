@@ -15,6 +15,10 @@ data "external" "pack" {
   program    = ["sh", "-c", "zip /tmp/statuspage_deploy.zip -FS -r node_modules *.js 1>&2 && node -e \"console.log(JSON.stringify({hash: crypto.createHash('sha256').update(fs.readFileSync('/tmp/statuspage_deploy.zip')).digest('base64')}))\""]
 }
 
+data "aws_kms_alias" "kms_production" {
+  name = "alias/thegrommet/vault-production"
+}
+
 resource "aws_lambda_function" "statuspage" {
   depends_on       = [data.external.pack]
   filename         = "/tmp/statuspage_deploy.zip"
@@ -24,6 +28,7 @@ resource "aws_lambda_function" "statuspage" {
   description      = "Status Page"
   function_name    = "tf-statuspage"
   runtime          = "nodejs8.10"
+  kms_key_arn      = data.aws_kms_alias.kms_production.target_key_arn
 
   environment {
     variables = {
@@ -164,7 +169,7 @@ resource "aws_lambda_permission" "allow_statuspage" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.statuspage.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.statuspage.execution_arn}/*/*/*"
+  source_arn    = "${aws_api_gateway_rest_api.statuspage.execution_arn}/*/*/supportrequest"
 }
 
 resource "aws_cloudwatch_log_group" "statuspage" {
