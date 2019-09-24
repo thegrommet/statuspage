@@ -1,15 +1,15 @@
 provider "aws" {
   region  = "us-west-2"
   profile = "thegrommet"
-  version = "~> 1.24"
+  version = "~> 2.7"
 }
 
 provider "archive" {
-  version = "~> 1.0"
+  version = "~> 1.2"
 }
 
 provider "external" {
-  version = "~> 1.0"
+  version = "~> 1.2"
 }
 
 terraform {
@@ -22,3 +22,4 @@ terraform {
     kms_key_id = "alias/thegrommet/vault-production"
   }
 }
+
