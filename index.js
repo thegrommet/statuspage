@@ -1,7 +1,7 @@
 const querystring = require('querystring')
 const {inherits} = require('util')
 const SNS = require('aws-sdk/clients/sns')
-const {WebClient: SlackClient} = require('@slack/client')
+const {WebClient: SlackClient} = require('@slack/web-api')
 const fetch = require('make-fetch-happen')
 const url = require('url')
 
